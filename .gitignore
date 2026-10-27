@@ -1,0 +1,9 @@
+# Config IDE
+.idea/
+
+#Variables d'environnement
+.env
+target/
+
+#Dépendances npm
+node_modules/
