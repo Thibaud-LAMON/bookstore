@@ -17,7 +17,7 @@ public class Author {
     @Column(name = "name", nullable = false)
     private String name;
 
-    //Inutile pour la navigation du catalogue, aurait pu être supprimé
+    //Inutile pour la navigation du catalogue, n'aurait pas dû être rédigé
     //@ManyToMany(mappedBy = "authors") //cascade inutiles => auteurs et livres ont des cycles de vie indépendants
     //private List<Book> books;
 }

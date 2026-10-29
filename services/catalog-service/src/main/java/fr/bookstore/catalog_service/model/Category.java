@@ -17,7 +17,7 @@ public class Category {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    //Inutile pour la navigation du catalogue, aurait pu être supprimé
+    //Inutile pour la navigation du catalogue, n'aurait pas dû être rédigé
     //@OneToMany(mappedBy = "category")
     //private List<Book> books;
 }
