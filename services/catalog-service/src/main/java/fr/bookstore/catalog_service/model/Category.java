@@ -3,8 +3,6 @@ package fr.bookstore.catalog_service.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "category")
 @Getter
@@ -13,12 +11,13 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Setter(AccessLevel.NONE) //Le code ne gère pas l'id
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Book> books;
+    //Inutile pour la navigation du catalogue, aurait pu être supprimé
+    //@OneToMany(mappedBy = "category")
+    //private List<Book> books;
 }

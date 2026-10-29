@@ -1,11 +1,7 @@
 package fr.bookstore.catalog_service.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "author")
@@ -15,12 +11,13 @@ import java.util.List;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Setter(AccessLevel.NONE) //Le code ne gère pas l'id
     private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "authors", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Book> books;
+    //Inutile pour la navigation du catalogue, aurait pu être supprimé
+    //@ManyToMany(mappedBy = "authors") //cascade inutiles => auteurs et livres ont des cycles de vie indépendants
+    //private List<Book> books;
 }
