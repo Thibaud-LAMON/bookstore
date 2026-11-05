@@ -36,7 +36,7 @@ public class Book {
     private LocalDate publishedOn; //LocalDate pour ne pas avoir l'heure dans la valeur
 
     @Column(name = "stock", nullable = false)
-    private Integer stock; //le stock tiens sur un Integer
+    private int stock; //le stock tiens sur un Integer
 
     @Version //évite que plusieurs commandes achètent le dernier exemplaire
     @Setter(AccessLevel.NONE) // géré par Hibernate
