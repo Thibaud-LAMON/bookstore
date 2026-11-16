@@ -1,10 +1,9 @@
-package fr.bookstore.catalog_service.api.mappers;
+package fr.bookstore.catalog_service.book;
 
-import fr.bookstore.catalog_service.api.dto.BookResponse;
-import fr.bookstore.catalog_service.api.dto.CreateBookRequest;
-import fr.bookstore.catalog_service.api.dto.UpdateBookRequest;
-import fr.bookstore.catalog_service.model.Author;
-import fr.bookstore.catalog_service.model.Book;
+import fr.bookstore.catalog_service.book.dto.BookResponse;
+import fr.bookstore.catalog_service.book.dto.CreateBookRequest;
+import fr.bookstore.catalog_service.book.dto.UpdateBookRequest;
+import fr.bookstore.catalog_service.author.Author;
 import org.mapstruct.* ;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)

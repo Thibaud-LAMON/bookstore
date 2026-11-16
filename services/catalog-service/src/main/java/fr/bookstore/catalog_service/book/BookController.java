@@ -1,9 +1,8 @@
-package fr.bookstore.catalog_service.api;
+package fr.bookstore.catalog_service.book;
 
-import fr.bookstore.catalog_service.api.dto.BookResponse;
-import fr.bookstore.catalog_service.api.dto.CreateBookRequest;
-import fr.bookstore.catalog_service.api.dto.UpdateBookRequest;
-import fr.bookstore.catalog_service.service.BookService;
+import fr.bookstore.catalog_service.book.dto.BookResponse;
+import fr.bookstore.catalog_service.book.dto.CreateBookRequest;
+import fr.bookstore.catalog_service.book.dto.UpdateBookRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

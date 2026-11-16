@@ -1,6 +1,5 @@
-package fr.bookstore.catalog_service.repository;
+package fr.bookstore.catalog_service.book;
 
-import fr.bookstore.catalog_service.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

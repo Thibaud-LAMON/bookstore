@@ -1,5 +1,7 @@
-package fr.bookstore.catalog_service.model;
+package fr.bookstore.catalog_service.book;
 
+import fr.bookstore.catalog_service.author.Author;
+import fr.bookstore.catalog_service.category.Category;
 import jakarta.persistence.*;
 import lombok.*;
 

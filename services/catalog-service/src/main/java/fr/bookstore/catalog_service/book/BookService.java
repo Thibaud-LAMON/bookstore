@@ -1,11 +1,15 @@
-package fr.bookstore.catalog_service.service;
+package fr.bookstore.catalog_service.book;
 
-import fr.bookstore.catalog_service.api.dto.*;
-import fr.bookstore.catalog_service.api.mappers.BookMapper;
-import fr.bookstore.catalog_service.exception.*;
-import fr.bookstore.catalog_service.model.Author;
-import fr.bookstore.catalog_service.model.Book;
-import fr.bookstore.catalog_service.repository.*;
+import fr.bookstore.catalog_service.author.AuthorRepository;
+import fr.bookstore.catalog_service.author.exception.AuthorNotFoundException;
+import fr.bookstore.catalog_service.book.dto.BookResponse;
+import fr.bookstore.catalog_service.book.dto.CreateBookRequest;
+import fr.bookstore.catalog_service.book.dto.UpdateBookRequest;
+import fr.bookstore.catalog_service.book.exception.BookNotFoundException;
+import fr.bookstore.catalog_service.book.exception.IsbnAlreadyExistsException;
+import fr.bookstore.catalog_service.category.CategoryRepository;
+import fr.bookstore.catalog_service.category.exception.CategoryNotFoundException;
+import fr.bookstore.catalog_service.author.Author;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

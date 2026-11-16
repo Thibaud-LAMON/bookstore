@@ -1,4 +1,4 @@
-package fr.bookstore.catalog_service.model;
+package fr.bookstore.catalog_service.author;
 
 import jakarta.persistence.*;
 import lombok.*;

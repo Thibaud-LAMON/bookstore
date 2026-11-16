@@ -1,4 +1,6 @@
-package fr.bookstore.catalog_service.exception;
+package fr.bookstore.catalog_service.author.exception;
+
+import fr.bookstore.catalog_service.common.NotFoundException;
 
 import java.util.Set;
 

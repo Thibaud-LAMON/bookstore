@@ -1,4 +1,4 @@
-package fr.bookstore.catalog_service.api.dto;
+package fr.bookstore.catalog_service.book.dto;
 
 import jakarta.validation.constraints.*;
 
