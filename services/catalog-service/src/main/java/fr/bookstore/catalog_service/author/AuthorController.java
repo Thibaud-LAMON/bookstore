@@ -21,17 +21,17 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-@Tag(name = "Auteurs", description = "Consultation et gestion de la listes des auteurs.")
+@Tag(name = "Auteurs", description = "Consultation et gestion de la liste des auteurs.")
 @RestController
-@RequestMapping("/api/catalog_service/v1/authors")
+@RequestMapping("/api/v1/authors")
 @RequiredArgsConstructor
 public class AuthorController {
 
     private final AuthorService authorService;
 
     @Operation(summary = "Rechercher les auteurs",
-            description = "Recherche l'auteur de façon paginée et insensible à la case" +
-                    "Renvoie tous les auteur en cas de recherche vide.")
+            description = "Recherche l'auteur de façon paginée et insensible à la casse " +
+                    "Renvoie tous les auteurs en cas de recherche vide.")
     @GetMapping
     public PagedModel<AuthorResponse> search(
             @Parameter(description = "Tout ou partie du nom de l'auteur cherché", example = "Camus")
@@ -41,8 +41,8 @@ public class AuthorController {
     }
 
     @Operation(summary = "Trouver un auteur par identifiant")
-    @ApiResponse(responseCode = "200", description = "Auteur Trouvé")
-    @ApiResponse(responseCode = "404", description = "Auteur Introuvable",
+    @ApiResponse(responseCode = "200", description = "Auteur trouvé")
+    @ApiResponse(responseCode = "404", description = "Auteur introuvable",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     @GetMapping("/{id}")
     public AuthorResponse get(@PathVariable Long id) {
@@ -50,7 +50,7 @@ public class AuthorController {
     }
 
     @Operation(summary = "Créer un auteur")
-    @ApiResponse(responseCode = "201", description = "Auteur Créé")
+    @ApiResponse(responseCode = "201", description = "Auteur créé")
     @ApiResponse(responseCode = "400", description = "Données incorrectes",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     @PostMapping
@@ -67,23 +67,21 @@ public class AuthorController {
     }
 
     @Operation(summary = "Modifier un auteur")
-    @ApiResponse(responseCode = "200", description = "Auteur Modifié")
+    @ApiResponse(responseCode = "200", description = "Auteur modifié")
     @ApiResponse(responseCode = "400", description = "Données incorrectes",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "404", description = "Auteur introuvable",
-            content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
-    @ApiResponse(responseCode = "409", description = "Modification annulée, une autre est déjà en cours.",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     @PutMapping("/{id}")
     public AuthorResponse update(@PathVariable Long id, @Valid @RequestBody AuthorRequest request) {
         return authorService.update(id, request);
     }
 
-    @Operation(summary = "Modifier un auteur")
-    @ApiResponse(responseCode = "204", description = "Auteur Supprimé")
+    @Operation(summary = "Supprimer un auteur")
+    @ApiResponse(responseCode = "204", description = "Auteur supprimé")
     @ApiResponse(responseCode = "404", description = "Auteur introuvable",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
-    @ApiResponse(responseCode = "409", description = "Suppression impossible, une opération l'en empêche.",
+    @ApiResponse(responseCode = "409", description = "Suppression impossible, l’auteur est associé à des livres.",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -23,14 +23,14 @@ import java.net.URI;
 
 @Tag(name = "Livres", description = "Consultation et gestion du catalogue de livres.")
 @RestController
-@RequestMapping("/api/catalog_service/v1/books")
+@RequestMapping("/api/v1/books")
 @RequiredArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
     @Operation(summary = "Recherche les livres",
-            description = "Recherche sur le titre de façon paginée et insensible à la case. " +
+            description = "Recherche sur le titre de façon paginée et insensible à la casse. " +
                     "Renvoie tout le catalogue en cas de recherche vide.")
     @GetMapping
     public PagedModel<BookResponse> search(

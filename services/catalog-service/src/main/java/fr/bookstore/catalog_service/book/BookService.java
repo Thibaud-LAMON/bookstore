@@ -1,18 +1,14 @@
 package fr.bookstore.catalog_service.book;
 
-import fr.bookstore.catalog_service.author.AuthorRepository;
-import fr.bookstore.catalog_service.author.exception.AuthorNotFoundException;
+import fr.bookstore.catalog_service.author.AuthorService;
 import fr.bookstore.catalog_service.book.dto.*;
 import fr.bookstore.catalog_service.book.exception.*;
-import fr.bookstore.catalog_service.category.CategoryRepository;
-import fr.bookstore.catalog_service.category.exception.CategoryNotFoundException;
-import fr.bookstore.catalog_service.author.Author;
+import fr.bookstore.catalog_service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -21,8 +17,8 @@ import java.util.Set;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final CategoryRepository categoryRepository;
-    private final AuthorRepository authorRepository;
+    private final CategoryService categoryService;
+    private final AuthorService authorService;
     private final BookMapper mapper;
 
     private Book findOrThrow(Long id) {
@@ -32,18 +28,10 @@ public class BookService {
     }
 
     private void attachRelations(Book book, Long categoryId, Set<Long> authorIds) {
-        book.setCategory(categoryId == null ? null
-                : categoryRepository
-                .findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId)));
+        book.setCategory(categoryService.findEntityOrThrow(categoryId));
 
         book.getAuthors().clear();
-        if (authorIds != null && !authorIds.isEmpty()) {
-            List<Author> authors = authorRepository.findAllById(authorIds);
-            if (authors.size() != authorIds.size()) throw new AuthorNotFoundException(authorIds);
-            book.getAuthors()
-                .addAll(authors);
-        }
+        book.getAuthors().addAll(authorService.findAllByIdsOrThrow(authorIds));
     }
 
     public Page<BookResponse> search(String q, Pageable pageable){

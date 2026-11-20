@@ -8,24 +8,39 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthorService {
 
-    private final AuthorRepository repository;
+    private final AuthorRepository authorRepository;
     private final AuthorMapper mapper;
 
     private Author findOrThrow(Long id) {
-        return repository
+        return authorRepository
                 .findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
+    public Set<Author> findAllByIdsOrThrow(Set<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new LinkedHashSet<>();
+        }
+        List<Author> authors = authorRepository.findAllById(ids);
+        if (authors.size() != ids.size()) {
+            throw new AuthorNotFoundException(ids);
+        }
+        return new LinkedHashSet<>(authors);
+    }
+
     public Page<AuthorResponse> search(String q, Pageable pageable) {
         Page<Author> page = (q == null || q.isBlank())
-                ? repository.findAll(pageable)
-                : repository.findByNameContainingIgnoreCase(q, pageable);
+                ? authorRepository.findAll(pageable)
+                : authorRepository.findByNameContainingIgnoreCase(q, pageable);
         return page.map(mapper::toResponse);
     }
 
@@ -36,7 +51,7 @@ public class AuthorService {
     @Transactional
     public AuthorResponse create(AuthorRequest request) {
         Author author = mapper.toEntity(request);
-        return mapper.toResponse(repository.save(author));
+        return mapper.toResponse(authorRepository.save(author));
     }
 
     @Transactional
@@ -49,10 +64,10 @@ public class AuthorService {
     @Transactional
     public void delete(Long id) {
         Author author = findOrThrow(id);
-        long bookCount = repository.countBooksByAuthorId(id);
+        long bookCount = authorRepository.countBooksByAuthorId(id);
         if (bookCount > 0) {
             throw new AuthorInUseException(id, bookCount);
         }
-        repository.delete(author);
+        authorRepository.delete(author);
     }
 }
