@@ -1,5 +1,6 @@
 package fr.bookstore.catalog_service.book.dto;
 
+import fr.bookstore.catalog_service.author.dto.AuthorResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -34,9 +35,8 @@ public record BookResponse(
         @Schema(description = "Nom de la catégorie ; null si le livre n'est pas classé", example = "Roman")
         String category,
 
-        @ArraySchema(schema = @Schema(example = "Albert Camus"),
-                arraySchema = @Schema(requiredMode = REQUIRED,
+        @ArraySchema(arraySchema = @Schema(requiredMode = REQUIRED,
                         description = "Noms des auteurs ; liste vide si aucun"))
-        List<String> authors) {}
+        List<AuthorResponse> authors) {}
 
 

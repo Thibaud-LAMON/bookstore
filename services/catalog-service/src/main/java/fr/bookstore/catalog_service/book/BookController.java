@@ -50,7 +50,7 @@ public class BookController {
     }
 
     @Operation(summary = "Créer un livre")
-    @ApiResponse(responseCode = "201", description = "Livre créer")
+    @ApiResponse(responseCode = "201", description = "Livre créé")
     @ApiResponse(responseCode = "400", description = "Données incorrectes",
             content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     @ApiResponse(responseCode = "409", description = "ISBN déjà existant",

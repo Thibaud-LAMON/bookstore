@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -49,8 +49,9 @@ public class Book {
     private Category category;
 
     @ManyToMany
+    @OrderBy("name ASC") // garanti un classement par ordre alphabétique, LinkedHashedSet garde l'ordre en mémoire
     @JoinTable(name = "book_author", //fixer les noms est essentiel pour les migrations via Flyway
             joinColumns = @JoinColumn(name = "book_id"), //sans fixation les noms seraient générés de manière imprévisible
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors = new HashSet<>(); //Empêche les manip de collections null
+    private Set<Author> authors = new LinkedHashSet<>(); //Empêche les manip de collections null
 }
