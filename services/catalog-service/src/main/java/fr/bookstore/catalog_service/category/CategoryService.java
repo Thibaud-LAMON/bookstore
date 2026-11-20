@@ -1,6 +1,5 @@
 package fr.bookstore.catalog_service.category;
 
-
 import fr.bookstore.catalog_service.category.exception.CategoryInUseException;
 import fr.bookstore.catalog_service.category.dto.CategoryRequest;
 import fr.bookstore.catalog_service.category.dto.CategoryResponse;

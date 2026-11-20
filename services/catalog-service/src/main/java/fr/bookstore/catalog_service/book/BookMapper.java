@@ -2,7 +2,6 @@ package fr.bookstore.catalog_service.book;
 
 import fr.bookstore.catalog_service.author.AuthorMapper;
 import fr.bookstore.catalog_service.book.dto.*;
-import fr.bookstore.catalog_service.author.Author;
 import fr.bookstore.catalog_service.category.CategoryMapper;
 import org.mapstruct.*;
 
@@ -10,8 +9,6 @@ import org.mapstruct.*;
 public interface BookMapper {
 
     BookResponse toResponse(Book book);
-
-    default String authorName(Author author) { return author.getName(); } //permettra de récupérer le nom de l'auteur
 
     @Mapping(target = "category", ignore = true)
     @Mapping(target = "authors", ignore = true)

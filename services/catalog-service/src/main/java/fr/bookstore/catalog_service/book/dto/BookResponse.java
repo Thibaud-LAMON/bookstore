@@ -1,6 +1,7 @@
 package fr.bookstore.catalog_service.book.dto;
 
 import fr.bookstore.catalog_service.author.dto.AuthorResponse;
+import fr.bookstore.catalog_service.category.dto.CategoryResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -33,7 +34,7 @@ public record BookResponse(
         int stock,
 
         @Schema(description = "Nom de la catégorie ; null si le livre n'est pas classé", example = "Roman")
-        String category,
+        CategoryResponse category,
 
         @ArraySchema(arraySchema = @Schema(requiredMode = REQUIRED,
                         description = "Noms des auteurs ; liste vide si aucun"))
