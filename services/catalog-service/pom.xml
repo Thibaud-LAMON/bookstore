@@ -146,6 +146,7 @@
                     <compilerArgs>
                         <arg>-Amapstruct.defaultComponentModel=spring</arg>
                         <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
+                        <arg>-Amapstruct.defaultInjectionStrategy=constructor</arg>
                     </compilerArgs>
                 </configuration>
 				<executions>
