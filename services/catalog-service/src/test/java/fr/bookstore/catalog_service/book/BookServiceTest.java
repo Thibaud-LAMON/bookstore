@@ -64,7 +64,7 @@ public class BookServiceTest {
     private static Author camus() {
 
         Author a = new Author();
-        a.setName("Camus, Albert");
+        a.setName("Albert Camus");
         return a;
     }
 
@@ -92,7 +92,7 @@ public class BookServiceTest {
                     .isEqualByComparingTo("8.90");
             assertThat(response.category().name())
                     .isEqualTo("Roman");
-            assertThat(response.authors()).extracting("name").containsExactly("Camus, Albert");
+            assertThat(response.authors()).extracting("name").containsExactly("Albert Camus");
         }
 
 
@@ -110,8 +110,9 @@ public class BookServiceTest {
         }
 
         @Test
-        @DisplayName("Refuse une catégorie inexistant, n'enregistre pas.")
+        @DisplayName("Refuse une catégorie inexistante, n'enregistre pas.")
         void rejectsUnknownCategory() {
+
             when(bookRepository.existsByIsbn(any())).thenReturn(false);
             when(categoryService.findEntityOrThrow(1L)).thenThrow(new CategoryNotFoundException(1L));
 
@@ -130,6 +131,7 @@ public class BookServiceTest {
         @Test
         @DisplayName("Lève BookNotFoundException si l'id n'existe pas.")
         void throwsWhenMissing() {
+
             when(bookRepository.findById(99L)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> bookService.get(99L))
@@ -160,8 +162,58 @@ public class BookServiceTest {
 
             assertThat(existing.getTitle()).isEqualTo("Nouveau titre");
             assertThat(existing.getIsbn()).isEqualTo("9782070360024");
-            assertThat(existing.getPrice()).isEqualByComparingTo("9.90");
+            assertThat(response.price()).isEqualByComparingTo("9.90");
             verify(bookRepository, never()).save(any());
+        }
+
+        @Test
+        @DisplayName("Lève BookNotFoundException si l'id n'existe pas.")
+        void throwsWhenMissing() {
+
+            Book existing = new Book();
+            existing.setIsbn("9782070360024");
+            existing.setTitle("Ancien titre");
+            existing.setPrice(new BigDecimal("5.00"));
+            when(bookRepository.findById(42L)).thenReturn(Optional.of(existing));
+            when(authorService.findAllByIdsOrThrow(any())).thenReturn(new LinkedHashSet<>());
+
+            UpdateBookRequest request = new UpdateBookRequest("Nouveau titre", null,
+                    new BigDecimal("9.90"), null, 10, null, Set.of());
+
+            BookResponse response = bookService.update(42L, request);
+
+            assertThatThrownBy(() -> bookService.update(99L, request))
+                    .isInstanceOf(BookNotFoundException.class)
+                    .hasMessageContaining("99");
+        }
+    }
+
+    @Nested
+    @DisplayName("delete")
+    class Delete {
+
+        @Test
+        @DisplayName("Supprime le livre.")
+        void deleteExistingEntity() {
+
+            Book existing = new Book();
+            existing.setIsbn("9782070360024");
+            existing.setTitle("Ancien titre");
+            existing.setPrice(new BigDecimal("5.00"));
+
+            bookRepository.delete(existing);
+            verify(bookRepository).delete(existing);
+        }
+
+        @Test
+        @DisplayName("Lève BookNotFoundException si l'id n'existe pas.")
+        void throwsWhenMissing() {
+
+            when(bookRepository.findById(99L)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> bookService.get(99L))
+                    .isInstanceOf(BookNotFoundException.class)
+                    .hasMessageContaining("99");
         }
     }
 }
