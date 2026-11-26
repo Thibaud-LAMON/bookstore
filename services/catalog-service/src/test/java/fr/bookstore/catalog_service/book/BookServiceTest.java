@@ -46,7 +46,6 @@ public class BookServiceTest {
         bookService = new BookService(bookRepository, categoryService, authorService, mapper);
     }
 
-
     private static CreateBookRequest validCreateRequest() {
 
         return new CreateBookRequest("9782070360024", "L'Étranger", "Roman de Camus",
@@ -170,21 +169,25 @@ public class BookServiceTest {
         @DisplayName("Lève BookNotFoundException si l'id n'existe pas.")
         void throwsWhenMissing() {
 
-            Book existing = new Book();
+            /* Book existing = new Book();
             existing.setIsbn("9782070360024");
             existing.setTitle("Ancien titre");
             existing.setPrice(new BigDecimal("5.00"));
-            when(bookRepository.findById(42L)).thenReturn(Optional.of(existing));
-            when(authorService.findAllByIdsOrThrow(any())).thenReturn(new LinkedHashSet<>());
+            //when(bookRepository.findById(42L)).thenReturn(Optional.of(existing));
+            when(authorService.findAllByIdsOrThrow(any())).thenReturn(new LinkedHashSet<>()); */ //inutile
+            when(bookRepository.findById(99L)).thenReturn(Optional.empty());
 
             UpdateBookRequest request = new UpdateBookRequest("Nouveau titre", null,
                     new BigDecimal("9.90"), null, 10, null, Set.of());
 
-            BookResponse response = bookService.update(42L, request);
+            //BookResponse response = bookService.update(42L, request); //inutile
 
+            //testait une entité non préparée (42L préparée mais 99L n'existe pas), corrigé par ligne 179
             assertThatThrownBy(() -> bookService.update(99L, request))
                     .isInstanceOf(BookNotFoundException.class)
                     .hasMessageContaining("99");
+
+            verifyNoInteractions(authorService, categoryService);
         }
     }
 
@@ -198,11 +201,14 @@ public class BookServiceTest {
 
             Book existing = new Book();
             existing.setIsbn("9782070360024");
-            existing.setTitle("Ancien titre");
-            existing.setPrice(new BigDecimal("5.00"));
+            when(bookRepository.findById(99L)).thenReturn(Optional.of(existing));
 
-            bookRepository.delete(existing);
-            verify(bookRepository).delete(existing);
+            //INCORRECT : le test appelle le mock, il doit appeler le service
+            //bookRepository.delete(existing);
+            //CORRECT : ci-dessous
+            bookService.delete(99L);
+
+            verify(bookRepository).delete(existing); // le mock doit vérifier qu'il est appelé par le service.
         }
 
         @Test
@@ -211,7 +217,7 @@ public class BookServiceTest {
 
             when(bookRepository.findById(99L)).thenReturn(Optional.empty());
 
-            assertThatThrownBy(() -> bookService.get(99L))
+            assertThatThrownBy(() -> bookService.delete(99L))
                     .isInstanceOf(BookNotFoundException.class)
                     .hasMessageContaining("99");
         }
